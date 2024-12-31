@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "906979460302",
+    "project_id": "dalel-ca09b",
+    "storage_bucket": "dalel-ca09b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906979460302:android:ee22ba34ac27d8cba4fc9f",
+        "android_client_info": {
+          "package_name": "com.example.atele_online"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906979460302-ipgr2r28lejju22cs8befdrbkl0a7f1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.atele_online",
+            "certificate_hash": "7071991b72eede7b472c1ea10b135955d585eab6"
+          }
+        },
+        {
+          "client_id": "906979460302-edb43oq4gvvrm6rc4jmrc5ohkf1s1dng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKPeQlXTITEGqe0XabOaZNukhS7Bym7aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906979460302-edb43oq4gvvrm6rc4jmrc5ohkf1s1dng.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "906979460302-firq3j8hk0trp4iqmjsjqm4qr9spb0eg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ateleOnline"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906979460302:android:f79badafccf119b3a4fc9f",
+        "android_client_info": {
+          "package_name": "com.example.atele_seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906979460302-edb43oq4gvvrm6rc4jmrc5ohkf1s1dng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKPeQlXTITEGqe0XabOaZNukhS7Bym7aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906979460302-edb43oq4gvvrm6rc4jmrc5ohkf1s1dng.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "906979460302-firq3j8hk0trp4iqmjsjqm4qr9spb0eg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ateleOnline"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
