@@ -13,7 +13,7 @@ class SellerModel {
   factory SellerModel.fromJson(Map<String, dynamic> json) {
     return SellerModel(
       sellerId: json['sellerId'],
-      sellerName: json['sellerName'],
+      sellerName: json['fristname'],
       ateleName: json['ateleName'],
       sellerImages: json['sellerImages'],
       ateleImages: json['ateleImages'],

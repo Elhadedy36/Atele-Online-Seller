@@ -1,5 +1,6 @@
 import 'package:atele_seller/core/utils/app_colors.dart';
 import 'package:atele_seller/core/utils/app_strings.dart';
+import 'package:atele_seller/feature/addproduct/presentation/cubit/addproduct_cubit.dart';
 import 'package:atele_seller/feature/addproduct/presentation/views/add_product_view.dart';
 import 'package:atele_seller/feature/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,10 @@ class HomeNavBarWidget extends StatelessWidget {
 List<Widget> _buildScreens() {
   return [
     const HomeView(),
-    const AddProductView(),
+    BlocProvider(
+      create: (context) => AddProductCubit(),
+      child:  AddProductView(),
+    ),
   ];
 }
 
@@ -44,11 +48,14 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       inactiveColorPrimary: AppColors.greyColor,
     ),
     PersistentBottomNavBarItem(
-      icon:  Icon(Icons.add,size: 35.r,color: AppColors.blackColor,),
+      icon: Icon(
+        Icons.add,
+        size: 35.r,
+        color: AppColors.blackColor,
+      ),
       title: (AppStrings.home),
       activeColorPrimary: AppColors.blackColor,
       inactiveColorPrimary: AppColors.greyColor,
     ),
-   
   ];
 }

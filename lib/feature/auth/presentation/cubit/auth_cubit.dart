@@ -98,7 +98,7 @@ class AuthCubit extends Cubit<AuthState> {
       FirebaseStrings.ateleName: sellerModel.ateleName,
       FirebaseStrings.phoneNumber: sellerModel.phoneNumber,
       FirebaseStrings.location: sellerModel.location,
-      FirebaseStrings.userId: sellerModel.sellerId,
+      FirebaseStrings.sellerId: sellerModel.sellerId,
       FirebaseStrings.email: sellerModel.email,
       'sellerImages': sellerModel.sellerImages,
       'ateleImages': sellerModel.ateleImages,
