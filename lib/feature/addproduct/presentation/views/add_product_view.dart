@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:atele_seller/core/functions/custom_appbar.dart';
+import 'package:atele_seller/core/utils/app_strings.dart';
 import 'package:atele_seller/feature/addproduct/presentation/cubit/addproduct_cubit.dart';
 import 'package:atele_seller/feature/addproduct/presentation/cubit/addproduct_state.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,28 @@ class AddProductView extends StatelessWidget {
           child: BlocConsumer<AddProductCubit, AddProductState>(
             listener: (context, state) {
               if (state is AddProductImagesPicked) {
-                // Handle image selection if needed
+                // Show snackbar for image picking
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('${state.productImages.length} images selected')),
+                );
+              }
+              if (state is AddProductImagesUploaded) {
+                // Show snackbar for successful image upload
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Images uploaded successfully')),
+                );
+              }
+              if (state is AddProductError) {
+                // Show snackbar for error during image upload or other operations
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error: ${state.errorMessage}')),
+                );
               }
             },
             builder: (context, state) {
               final cubit = context.read<AddProductCubit>();
-              final formKey = context.read<AddProductCubit>().formKey;
+              final formKey = cubit.formKey;
+
               return Form(
                 key: formKey,
                 child: ListView(
@@ -46,8 +63,8 @@ class AddProductView extends StatelessWidget {
                     ),
                     DropdownButtonFormField<String>(
                       items: const [
-                        DropdownMenuItem(value: 'Wedding Dresses', child: Text('Wedding Dresses')),
-                        DropdownMenuItem(value: 'Evening Dresses', child: Text('Evening Dresses')),
+                        DropdownMenuItem(value: AppStrings.weddingDress ,child: Text('Wedding Dresses')),
+                        DropdownMenuItem(value: AppStrings.eveningDress, child: Text('Evening Dresses')),
                       ],
                       onChanged: cubit.setCategory,
                       value: cubit.selectedCategory,
@@ -55,7 +72,7 @@ class AddProductView extends StatelessWidget {
                         labelText: 'Category',
                         hintText: 'Select category',
                       ),
-                      validator: (value) => value == null || value.isEmpty ? 'Category is required' : null,
+                      validator: (value) => value == null ? 'Please select a category' : null,
                     ),
                     const SectionTitle(title: 'Sale or Rent'),
                     Container(
@@ -119,7 +136,7 @@ class AddProductView extends StatelessWidget {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: cubit.productImages.isEmpty
+                        child: cubit.productImagesList.isEmpty
                             ? const Center(child: Text('Tap to pick product images', style: TextStyle(color: Colors.grey)))
                             : GridView.builder(
                                 shrinkWrap: true,
@@ -128,9 +145,9 @@ class AddProductView extends StatelessWidget {
                                   crossAxisSpacing: 4,
                                   mainAxisSpacing: 4,
                                 ),
-                                itemCount: cubit.productImages.length,
+                                itemCount: cubit.productImagesList.length,
                                 itemBuilder: (context, index) => Image.file(
-                                  File(cubit.productImages[index].path),
+                                  File(cubit.productImagesList[index].path),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -144,14 +161,13 @@ class AddProductView extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       validator: (value) => value == null || value.isEmpty ? 'Price is required' : null,
                     ),
-                    // if (cubit.selectedTransactionTab == 1)
-                      CustomTextField(
-                        controller: cubit.depositAmountController,
-                        label: 'Deposit Amount',
-                        hint: 'Enter deposit amount',
-                        keyboardType: TextInputType.number,
-                        validator: (value) => value == null || value.isEmpty ? 'Deposit amount is required' : null,
-                      ),
+                    CustomTextField(
+                      controller: cubit.depositAmountController,
+                      label: 'Deposit Amount',
+                      hint: 'Enter deposit amount',
+                      keyboardType: TextInputType.number,
+                      validator: (value) => value == null || value.isEmpty ? 'Deposit amount is required' : null,
+                    ),
                     const SectionTitle(title: 'Stock and Availability'),
                     CustomTextField(
                       controller: cubit.stockController,
@@ -190,7 +206,15 @@ class AddProductView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: ElevatedButton(
-                        onPressed: () => cubit.addProduct(),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                              cubit.addProduct();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Please fill out all required fields')),
+                            );
+                          }
+                        },
                         child: const Text('Submit Product'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -222,6 +246,7 @@ class SectionTitle extends StatelessWidget {
     );
   }
 }
+
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -235,32 +260,23 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.label,
     required this.hint,
-    this.maxLines = 1,
+    this.maxLines,
     this.keyboardType = TextInputType.text,
     this.validator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        maxLines: maxLines,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        ),
-        validator: validator,
-        onTap: () {
-          // Ensure focus when tapped
-
-        },
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
+      maxLines: maxLines ?? 1,
+      keyboardType: keyboardType,
+      validator: validator,
     );
   }
 }
