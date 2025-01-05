@@ -1,7 +1,6 @@
 import 'package:atele_seller/feature/categories/data/model/category_model.dart';
 import 'package:atele_seller/feature/categories/presentation/widgets/category_item.dart';
 import 'package:atele_seller/feature/store/presentation/cubit/cubit/products_cubit.dart';
-import 'package:atele_seller/feature/store/presentation/views/StoreView.dart';
 import 'package:atele_seller/feature/store/presentation/widgets/Store_Tab_View_Builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

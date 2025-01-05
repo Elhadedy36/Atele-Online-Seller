@@ -1,5 +1,6 @@
 import 'package:atele_seller/core/functions/navigation.dart';
 import 'package:atele_seller/core/models/product_model.dart';
+import 'package:atele_seller/feature/store/presentation/views/items_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,8 +22,15 @@ class ProductItem extends StatelessWidget {
 
         return GestureDetector(
           onTap: () {
-            customNavigate(context, path: '/itemView');
-          },
+             Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return ItemView(
+                  product: product,);
+              }),
+            );
+            
+          },//
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: maxWidth, // Card will respect its parent's constraints
@@ -50,7 +58,7 @@ class ProductItem extends StatelessWidget {
                             fit: BoxFit.cover,
                             image: NetworkImage(
                               product.productImages.isNotEmpty
-                                  ? product.productImages
+                                  ? product.productImages[0]
                                   : 'https://via.placeholder.com/300',
                             ),
                           ),

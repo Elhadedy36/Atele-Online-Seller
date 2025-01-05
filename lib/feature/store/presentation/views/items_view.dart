@@ -1,9 +1,11 @@
 
 import 'package:atele_seller/core/functions/custom_appbar.dart';
 import 'package:atele_seller/core/models/product_model.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ItemView extends StatelessWidget {
   const ItemView({super.key, required this.product});
@@ -35,16 +37,38 @@ final ProductModel product;
               children: [
                 Stack(
                   children: [
-                    Container(
-                      height: 280.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(product.productImages.isNotEmpty
-                              ? product.productImages
-                              : 'https://via.placeholder.com/300'),
-                        ),
+                    CarouselSlider(
+                      items: product.productImages.map((imageUrl) {
+                        return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: PhotoView(
+                                  imageProvider: NetworkImage(imageUrl),
+                                  backgroundDecoration: const BoxDecoration(
+                                      color: Colors.transparent),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.r),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(imageUrl),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      options: CarouselOptions(
+                        height: 280.h,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        enlargeCenterPage: true,
+                        scrollDirection: Axis.horizontal,
                       ),
                     ),
                     Positioned(

@@ -1,4 +1,3 @@
-import 'package:atele_seller/core/cubits/cubit/shared_data_cubit.dart';
 import 'package:atele_seller/core/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +13,9 @@ class Atele_Seller extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return BlocProvider(
-            create: (context) => SharedDataCubit(),
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: router,
-            ),
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: router,
           );
         });
   }
