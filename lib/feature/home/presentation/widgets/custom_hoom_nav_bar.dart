@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-
 PersistentTabController _controller = PersistentTabController();
 
 class HomeNavBarWidget extends StatelessWidget {
@@ -35,7 +34,7 @@ List<Widget> _buildScreens() {
     const HomeView(),
     BlocProvider(
       create: (context) => AddProductCubit(),
-      child:  AddProductView(),
+      child: AddProductView(),
     ),
     const CategoriesView()
   ];
@@ -44,14 +43,24 @@ List<Widget> _buildScreens() {
 List<PersistentBottomNavBarItem> _navBarsItems() {
   return [
     PersistentBottomNavBarItem(
+      inactiveIcon: Icon(
+        Icons.home_outlined,
+        size: 35.r,
+        color: AppColors.blackColor,
+      ),
       icon: const Icon(Icons.home),
       title: (AppStrings.home),
       activeColorPrimary: AppColors.blackColor,
       inactiveColorPrimary: AppColors.greyColor,
     ),
     PersistentBottomNavBarItem(
+      inactiveIcon: Icon(
+        Icons.add_box_outlined,
+        size: 35.r,
+        color: AppColors.blackColor,
+      ),
       icon: Icon(
-        Icons.add,
+        Icons.add_box,
         size: 35.r,
         color: AppColors.blackColor,
       ),
@@ -60,8 +69,13 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       inactiveColorPrimary: AppColors.greyColor,
     ),
     PersistentBottomNavBarItem(
+      inactiveIcon: Icon(
+        Icons.store_outlined,
+        size: 35.r,
+        color: AppColors.blackColor,
+      ),
       icon: Icon(
-        Icons.category,
+        Icons.store,
         size: 35.r,
         color: AppColors.blackColor,
       ),

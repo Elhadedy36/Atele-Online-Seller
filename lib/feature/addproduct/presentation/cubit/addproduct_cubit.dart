@@ -49,6 +49,7 @@ class AddProductCubit extends Cubit<AddProductState> {
   // Method to upload images with unique names
   Future<void> uploadImages() async {
     try {
+
       final String userId = FirebaseAuth.instance.currentUser!.uid;
       tempProductId ??= Uuid().v4();
       final String productTempFolder = "$userId/images/$tempProductId";
@@ -159,7 +160,7 @@ class AddProductCubit extends Cubit<AddProductState> {
         await uploadImages();
 
         await finalizeProductCreation(productId);
-
+emit(AddProductLoading());
         Map<String, dynamic> productData = {
           FirebaseStrings.productName: productNameController.text,
           FirebaseStrings.productDescription: descriptionController.text,
@@ -199,4 +200,33 @@ class AddProductCubit extends Cubit<AddProductState> {
       emit(AddProductError(e.toString()));
     }
   }
+  // Method to delete a product and its associated images folder
+Future<void> deleteProduct(String productId) async {
+  try {
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    // Reference to the product's images folder
+    final folderRef = fireStorage.ref("$userId/images/$productId");
+
+    // List all items in the folder
+    final ListResult listResult = await folderRef.listAll();
+
+    // Delete all files in the folder
+    for (Reference fileRef in listResult.items) {
+      await fileRef.delete();
+    }
+
+    // Delete the folder itself (if needed, Firebase Storage might handle this automatically)
+emit(ProductDeletedLoading());
+    // Delete product data from Firestore
+    await _firestoreAddProduct.doc(productId).delete();
+    await _firestoreAddSellerProduct.doc(productId).delete();
+
+    emit(ProductDeletedSuccess());  
+  } catch (error) {
+    print("Error deleting product $productId: $error");
+    emit(ProductDeletedError("Error deleting product: $error"));
+  }
+}
+
 }

@@ -34,3 +34,10 @@ class AddProductError extends AddProductState {
 class AddProductFinalizationComplete extends AddProductState {
   AddProductFinalizationComplete();
 }
+class ProductDeletedLoading extends AddProductState {}
+class ProductDeletedSuccess extends AddProductState {}
+class ProductDeletedError extends AddProductState 
+{
+  final String errorMessage;
+  ProductDeletedError(this.errorMessage);
+}
