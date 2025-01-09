@@ -5,18 +5,17 @@ import 'package:flutter/material.dart';
 
 
 class MyAppointmentsView extends StatelessWidget {
-  const MyAppointmentsView({super.key});
-
+  const MyAppointmentsView({super.key, required this.status});
+final String status;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: true,
-      appBar: customAppBar(title: 'My Appointments'),
-      body: const Padding(
+      body:  Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: CustomScrollView(slivers: [
           SliverToBoxAdapter(
-            child: MyAppointmentsBuilder(),
+            child: MyAppointmentsBuilder(status: status,),
           )
         ]),
       ),

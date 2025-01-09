@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyAppointmentsBuilder extends StatelessWidget {
-  const MyAppointmentsBuilder({super.key});
-
+  const MyAppointmentsBuilder({super.key, required this.status});
+final String status ;
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AppointmentsCubit>();
 
     var streamBuilder = StreamBuilder<List<AppointmentsModel>>(
-      stream: cubit.getAppointmentsStream(),
+      stream: cubit.getAppointmentsStream(status),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(

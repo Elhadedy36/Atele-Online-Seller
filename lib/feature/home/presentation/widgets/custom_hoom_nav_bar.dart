@@ -4,6 +4,7 @@ import 'package:atele_seller/feature/addproduct/presentation/cubit/addproduct_cu
 import 'package:atele_seller/feature/addproduct/presentation/views/add_product_view.dart';
 import 'package:atele_seller/feature/appointments/presentation/cubit/appointments_cubit.dart';
 import 'package:atele_seller/feature/appointments/presentation/views/my_appointments_view.dart';
+import 'package:atele_seller/feature/appointments/presentation/widgets/appointments_tabview_builder.dart';
 import 'package:atele_seller/feature/categories/presentation/views/categories_view.dart';
 import 'package:atele_seller/feature/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ List<Widget> _buildScreens() {
     const CategoriesView(),
     BlocProvider(
       create: (context) => AppointmentsCubit(),
-      child: MyAppointmentsView(),
+      child: AppointmentsTabviewBuilder(),
     ),
   ];
 }

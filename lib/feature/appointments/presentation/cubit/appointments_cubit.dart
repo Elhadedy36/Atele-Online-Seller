@@ -11,11 +11,11 @@ class AppointmentsCubit extends Cubit<void> {
 
   final _firestore = FirebaseFirestore.instance;
 
-  Stream<List<AppointmentsModel>> getAppointmentsStream() {
+  Stream<List<AppointmentsModel>> getAppointmentsStream(String status) {
     return _firestore
         .collection(FirebaseStrings.sellers)
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection(FirebaseStrings.appointments)
+        .collection(FirebaseStrings.appointments).where(FirebaseStrings.status, isEqualTo: status)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
