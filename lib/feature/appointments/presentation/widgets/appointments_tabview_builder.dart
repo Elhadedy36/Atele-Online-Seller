@@ -27,9 +27,9 @@ class AppointmentsTabviewBuilder extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            MyAppointmentsView(status :FirebaseStrings.statusPending ),
-            MyAppointmentsView(status :FirebaseStrings.statusApproved),
-            MyAppointmentsView(status :FirebaseStrings.statusrejected),
+            MyAppointmentsView(status :FirebaseStrings.statusPending ,isPending: true,),
+            MyAppointmentsView(status :FirebaseStrings.statusApproved,  isPending: false,),
+            MyAppointmentsView(status :FirebaseStrings.statusrejected,  isPending: false,),
           ],
         ),
       ),

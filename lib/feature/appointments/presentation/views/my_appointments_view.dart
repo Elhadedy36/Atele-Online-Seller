@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 
 
 class MyAppointmentsView extends StatelessWidget {
-  const MyAppointmentsView({super.key, required this.status});
+  const MyAppointmentsView({super.key, required this.status, required this.isPending});
 final String status;
+final bool isPending ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +16,7 @@ final String status;
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: CustomScrollView(slivers: [
           SliverToBoxAdapter(
-            child: MyAppointmentsBuilder(status: status,),
+            child: MyAppointmentsBuilder(isPending: isPending, status: status,),
           )
         ]),
       ),

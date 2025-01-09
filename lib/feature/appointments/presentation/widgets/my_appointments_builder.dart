@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyAppointmentsBuilder extends StatelessWidget {
-  const MyAppointmentsBuilder({super.key, required this.status});
+  const MyAppointmentsBuilder({super.key, required this.status, required this.isPending});
 final String status ;
+final bool isPending;
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AppointmentsCubit>();
@@ -30,7 +31,7 @@ final String status ;
             shrinkWrap: true,
             itemCount: appointments.length,
             itemBuilder: (context, index) {
-              return MyAppoinmentsItem(model: appointments[index]);
+              return MyAppoinmentsItem(isPending: isPending,model: appointments[index]);
             },
           );
         }
