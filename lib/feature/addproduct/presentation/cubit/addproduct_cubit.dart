@@ -49,7 +49,6 @@ class AddProductCubit extends Cubit<AddProductState> {
   // Method to upload images with unique names
   Future<void> uploadImages() async {
     try {
-
       final String userId = FirebaseAuth.instance.currentUser!.uid;
       tempProductId ??= Uuid().v4();
       final String productTempFolder = "$userId/images/$tempProductId";
@@ -79,7 +78,8 @@ class AddProductCubit extends Cubit<AddProductState> {
         final String userId = FirebaseAuth.instance.currentUser!.uid;
         final tempFolderRef = fireStorage.ref("$userId/images/$tempProductId");
         final ListResult listResult = await tempFolderRef.listAll();
-        final newProductFolderRef = fireStorage.ref("$userId/images/$newProductId");
+        final newProductFolderRef =
+            fireStorage.ref("$userId/images/$newProductId");
 
         realImageList.clear();
 
@@ -138,10 +138,11 @@ class AddProductCubit extends Cubit<AddProductState> {
   // Firestore reference for products and seller's products
   final CollectionReference _firestoreAddProduct =
       FirebaseFirestore.instance.collection(FirebaseStrings.products);
-  final CollectionReference _firestoreAddSellerProduct =
-      FirebaseFirestore.instance.collection(FirebaseStrings.sellers)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection(FirebaseStrings.products);
+  final CollectionReference _firestoreAddSellerProduct = FirebaseFirestore
+      .instance
+      .collection(FirebaseStrings.sellers)
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection(FirebaseStrings.products);
 
   // Method to add product to Firestore
   Future<void> addProduct() async {
@@ -153,22 +154,27 @@ class AddProductCubit extends Cubit<AddProductState> {
           .get();
 
       if (sellerDoc.exists) {
-        SellerModel sellerData = SellerModel.fromJson(sellerDoc.data() as Map<String, dynamic>);
+        SellerModel sellerData =
+            SellerModel.fromJson(sellerDoc.data() as Map<String, dynamic>);
         double price = double.tryParse(priceController.text) ?? 0.0;
-        double depositAmount = double.tryParse(depositAmountController.text) ?? 0.0;
+        double depositAmount =
+            double.tryParse(depositAmountController.text) ?? 0.0;
         String productId = _firestoreAddProduct.doc().id;
         await uploadImages();
 
         await finalizeProductCreation(productId);
-emit(AddProductLoading());
+        emit(AddProductLoading());
         Map<String, dynamic> productData = {
           FirebaseStrings.productName: productNameController.text,
           FirebaseStrings.productDescription: descriptionController.text,
           FirebaseStrings.price: price,
           FirebaseStrings.depositeAmount: depositAmount,
           FirebaseStrings.stock: int.tryParse(stockController.text) ?? 0,
-          FirebaseStrings.phoneNumber: useCurrentContact ? sellerData.phoneNumber : phoneNumberController.text,
-          FirebaseStrings.address: useCurrentContact ? sellerData.location : addressController.text,
+          FirebaseStrings.phoneNumber: useCurrentContact
+              ? sellerData.phoneNumber
+              : phoneNumberController.text,
+          FirebaseStrings.address:
+              useCurrentContact ? sellerData.location : addressController.text,
           FirebaseStrings.categoryName: selectedCategory,
           FirebaseStrings.isForRent: selectedTransactionTab == 0 ? false : true,
           FirebaseStrings.productsImages: realImageList,
@@ -180,7 +186,6 @@ emit(AddProductLoading());
         await _firestoreAddProduct.doc(productId).set(productData);
         await _firestoreAddSellerProduct.doc(productId).set(productData);
 
-
         productNameController.clear();
         descriptionController.clear();
         priceController.clear();
@@ -191,7 +196,7 @@ emit(AddProductLoading());
         selectedCategory = null;
         selectedTransactionTab = 0;
         useCurrentContact = true;
-
+        productImagesList.clear();
         emit(AddProductSuccess());
       } else {
         emit(AddProductError('Seller data not found.'));
@@ -200,33 +205,33 @@ emit(AddProductLoading());
       emit(AddProductError(e.toString()));
     }
   }
+
   // Method to delete a product and its associated images folder
-Future<void> deleteProduct(String productId) async {
-  try {
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
+  Future<void> deleteProduct(String productId) async {
+    try {
+      final String userId = FirebaseAuth.instance.currentUser!.uid;
 
-    // Reference to the product's images folder
-    final folderRef = fireStorage.ref("$userId/images/$productId");
+      // Reference to the product's images folder
+      final folderRef = fireStorage.ref("$userId/images/$productId");
 
-    // List all items in the folder
-    final ListResult listResult = await folderRef.listAll();
+      // List all items in the folder
+      final ListResult listResult = await folderRef.listAll();
 
-    // Delete all files in the folder
-    for (Reference fileRef in listResult.items) {
-      await fileRef.delete();
+      // Delete all files in the folder
+      for (Reference fileRef in listResult.items) {
+        await fileRef.delete();
+      }
+
+      // Delete the folder itself (if needed, Firebase Storage might handle this automatically)
+      emit(ProductDeletedLoading());
+      // Delete product data from Firestore
+      await _firestoreAddProduct.doc(productId).delete();
+      await _firestoreAddSellerProduct.doc(productId).delete();
+
+      emit(ProductDeletedSuccess());
+    } catch (error) {
+      print("Error deleting product $productId: $error");
+      emit(ProductDeletedError("Error deleting product: $error"));
     }
-
-    // Delete the folder itself (if needed, Firebase Storage might handle this automatically)
-emit(ProductDeletedLoading());
-    // Delete product data from Firestore
-    await _firestoreAddProduct.doc(productId).delete();
-    await _firestoreAddSellerProduct.doc(productId).delete();
-
-    emit(ProductDeletedSuccess());  
-  } catch (error) {
-    print("Error deleting product $productId: $error");
-    emit(ProductDeletedError("Error deleting product: $error"));
   }
-}
-
 }
