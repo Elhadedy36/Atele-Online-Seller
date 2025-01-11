@@ -57,6 +57,8 @@ abstract class FirebaseStrings {
   static const String statusPending = 'Pending';
   static const String statusApproved = 'Approved';
   static const String statusrejected = 'Rejected';
+  static const String viewsCount = 'viewsCount';
+
 /* products related */
   static const String products = 'Products';
   static const String productName = 'productName';

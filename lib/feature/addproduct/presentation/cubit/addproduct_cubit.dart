@@ -181,6 +181,7 @@ class AddProductCubit extends Cubit<AddProductState> {
           FirebaseStrings.sellerId: sellerId,
           FirebaseStrings.ateleName: sellerData.ateleName,
           FirebaseStrings.productId: productId,
+          FirebaseStrings.viewsCount:0
         };
 
         await _firestoreAddProduct.doc(productId).set(productData);

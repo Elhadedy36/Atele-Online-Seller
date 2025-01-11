@@ -27,15 +27,28 @@ class AppointmentsCubit extends Cubit<void> {
 
   // Function to update appointment status
   Future<void> updateAppointmentStatus(
-      {required String appointmentId, required String newStatus}) async {
+      {required AppointmentsModel appointment, required String newStatus}) async {
     try {
-      final userId = FirebaseAuth.instance.currentUser!.uid;
+      final sellerId = FirebaseAuth.instance.currentUser!.uid;
+
 
       await _firestore
           .collection(FirebaseStrings.sellers)
-          .doc(userId)
+          .doc(sellerId)
           .collection(FirebaseStrings.appointments)
-          .doc(appointmentId)
+          .doc(appointment.appointmentId)
+          .update({FirebaseStrings.status: newStatus});
+
+      await _firestore
+          .collection(FirebaseStrings.appointments)
+          .doc(appointment.appointmentId)
+          .update({FirebaseStrings.status: newStatus});
+
+      await _firestore
+          .collection(FirebaseStrings.users)
+          .doc(appointment.userId)
+          .collection(FirebaseStrings.appointments)
+          .doc(appointment.appointmentId)
           .update({FirebaseStrings.status: newStatus});
 
       print('Appointment status updated successfully');

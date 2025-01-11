@@ -132,7 +132,7 @@ final bool isPending;
                 child: TextButton(
                   onPressed: () 
                   {
-                    context.read<AppointmentsCubit>().updateAppointmentStatus(appointmentId: model.appointmentId, newStatus: FirebaseStrings.statusApproved);
+                    context.read<AppointmentsCubit>().updateAppointmentStatus(appointment: model, newStatus: FirebaseStrings.statusApproved);
                   }, // Empty for now
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.grey, // Approve button color
@@ -154,7 +154,7 @@ final bool isPending;
                 child: TextButton(
                   onPressed: () 
                   {
-                    context.read<AppointmentsCubit>().updateAppointmentStatus(appointmentId: model.appointmentId, newStatus: FirebaseStrings.statusrejected);
+                    context.read<AppointmentsCubit>().updateAppointmentStatus(appointment: model, newStatus: FirebaseStrings.statusrejected);
 
                   }, // Empty for now
                   style: TextButton.styleFrom(
